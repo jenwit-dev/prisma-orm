@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// Prisma Schema consists of 3 parts
+// 1. generator
+// 2. datasource
+// 3. model
+
+// Generate something from my prisma schema 
+// ex. generate mysql server database or ER diagram (community generator)
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+// Determine what RDBMS to use ex. mysql or postgresql
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// 1 model = 1 table
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  username     String        @unique @db.VarChar(20)
+  password     String
+  email        String?       @unique
+  gender       Gender?
+  transactions Transaction[]
+}
+
+model Category {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  transactions Transaction[]
+}
+
+model Transaction {
+  id         Int      @id @default(autoincrement())
+  payee      String
+  date       DateTime @db.Date()
+  // date        DateTime @default(now())
+  amount     Decimal  @db.Decimal(10, 2)
+  userId     Int
+  categoryId Int
+
+  user     User     @relation(fields: [userId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+}
