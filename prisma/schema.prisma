@@ -39,7 +39,7 @@ model User {
   updatedAt    DateTime      @updatedAt @map("updated_at")
   transactions Transaction[]
 
-  @@map("users")
+  @@map("users") // rename table name in DB to "users" but keep model name "User" in Prisma
 }
 
 model Category {
@@ -56,7 +56,7 @@ model Transaction {
   date       DateTime @db.Date()
   // date        DateTime @default(now())
   amount     Decimal  @db.Decimal(10, 2)
-  // remark     String?
+  remark     String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   user       User     @relation(fields: [userId], references: [id])
