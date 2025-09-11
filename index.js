@@ -12,6 +12,7 @@ const run = async () => {
     //   },
     // });
 
+    // prisma.modelName.createMany can NOT do nested create, but prisma.modelName.create can do nested create
     // const result = await prisma.category.createMany({
     //   data: [{ name: "Food" }, { name: "Transport" }],
     // });
@@ -127,7 +128,41 @@ const run = async () => {
     //   },
     // });
 
-    // updatemany
+    // const result = await prisma.user.updateMany({
+    //   data: {
+    //     password: "0000",
+    //   },
+    //   where: {
+    //     username: {
+    //       startsWith: "J",
+    //     },
+    //   },
+    // });
+
+    // const result = await prisma.user.upsert({
+    //   create: {
+    //     username: "Anne",
+    //     password: "123",
+    //   },
+    //   update: {
+    //     password: "123",
+    //   },
+    //   where: {
+    //     username: "Anne",
+    //   },
+    // });
+
+    // const result = await prisma.user.delete({
+    //   where: {
+    //     username: "Anne",
+    //   },
+    // });
+
+    const result = await prisma.transaction.deleteMany({
+      where: {
+        payee: "7-11",
+      },
+    });
 
     console.log(result);
   } catch (err) {
